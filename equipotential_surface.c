@@ -33,7 +33,7 @@
 
 const double pi = 4.0l * atan(1.0l);
 const double pih = pi / 2.0l;
-const double d2r = pi / 180.0l;  // Conversion from deg to rad
+const double d2r = pi / 180.0l; /* Conversion from deg to rad */
 
 /* Coefficients for the computation of the ALFs */
 double *root, *rooti, *norm1, *norm2;
@@ -46,26 +46,26 @@ void cholesky_tridiagonal(double *, double *, double *, int);
 int main(void)
 {
 	register int i, j, t, q, n, m;
-    char ch, line[BUFSIZ], str[BUFSIZ];
+	char ch, line[BUFSIZ], str[BUFSIZ];
 	int r, p, N, STnieven, STniodd, S, header1, header2, temp;
 	int n2, r2, np1, nm1, nm3, r2m1, i_1, points, iterations;
 	double coeff, coefn, z, A, B, C, pnn, pn0, sign;
 	double *pnm, *Snm, *Cnm, _snm, _cnm, test;
 	double cosnm1x, cosnm2x, cosnx, sinnm1x, sinnm2x, sinnx, *cosn, *sinn;
 	double Wa, DiffWa, deltaW, DiffdeltaW, lambda, theta, rho;
-    double *colatitude, *longitude, *radius, *wpi;
-    double *bij, *Di, *si, *ti, *gi, *mij, *wi, *di;
+	double *colatitude, *longitude, *radius, *wpi;
+	double *bij, *Di, *si, *mij, *wi, *di;
 	double *Wp, *DiffW;
 	double sigma01, sigma0;
 	double bii, bi_ip1, Fi0, ridi, summation1, resi, resii;
-    double frac, var, sintheta, sin2theta;
+	double frac, var, sintheta, sin2theta;
 	FILE *fp1, *fp2;
 
 	N = 2190; /* The maximum degree of the ALFs */
-    char file1[BUFSIZ] = "EGM2008.gfc"; /* The name of the global gravity model file */
-    header1 = 22; /* The header of the global gravity model file */
-    char file2[BUFSIZ] = "spherical_coords_geoid_step_10.txt"; /* The name of the measurements file */
-    header2 = 1; /* The header of the measurements file */
+	char file1[BUFSIZ] = "EGM2008.gfc"; /* The name of the global gravity model file */
+	header1 = 22; /* The header of the global gravity model file */
+	char file2[BUFSIZ] = "spherical_coords_geoid_step_10.txt"; /* The name of the measurements file */
+	header2 = 1; /* The header of the measurements file */
 
 	STnieven = (N % 2) ? ((N - 1) * (N - 3) / 8):(N * (N - 2) / 8); /* The number of the Tni ratios for n even */
 	STniodd = (N % 2) ? ((N * N - 1) / 8):(N * (N - 2) / 8); /* The number of the Tni ratios for n odd */
@@ -83,7 +83,7 @@ int main(void)
 		exit(2000);
 	}
 
-    /* Counting the measurements */
+	/* Counting the measurements */
 	i = 0;
 	while ((ch = getc(fp2)) != EOF)
 		if (ch == '\n')
@@ -92,8 +92,8 @@ int main(void)
 
 	points = i - header2; /* The number of points */
 	r = points - 1; /* Degrees of freedom */
-    r2 = 2 * r;
-    r2m1 = r2 - 1;
+	r2 = 2 * r;
+	r2m1 = r2 - 1;
 	printf("\nN = %d\nS = %d ALFs\nPoints = %d\nDegrees of freedom = %d", N, S, points, r);
 
 	/* Allocating memory */
@@ -127,9 +127,9 @@ int main(void)
 		exit(14);
 	else if ((longitude = malloc(points * sizeof(double))) == NULL)
 		exit(15);
-    else if ((radius = malloc(points * sizeof(double))) == NULL)
+	else if ((radius = malloc(points * sizeof(double))) == NULL)
 		exit(16);
-    else if ((wpi = malloc(points * sizeof(double))) == NULL)
+	else if ((wpi = malloc(points * sizeof(double))) == NULL)
 		exit(17);
 	else if ((anm = malloc(S * sizeof(double))) == NULL)
 		exit(18);
@@ -137,26 +137,22 @@ int main(void)
 		exit(19);
 	else if ((cnm = malloc(S * sizeof(double))) == NULL)
 		exit(20);
-    else if ((Di = malloc(r * sizeof(double))) == NULL)
+	else if ((Di = malloc(r * sizeof(double))) == NULL)
 		exit(21);
-    else if ((si = malloc(r * sizeof(double))) == NULL)
+	else if ((si = malloc(r * sizeof(double))) == NULL)
 		exit(22);
-    else if ((di = malloc(points * sizeof(double))) == NULL)
+	else if ((di = malloc(points * sizeof(double))) == NULL)
 		exit(23);
-    else if ((ti = malloc((points + 1) * sizeof(double))) == NULL)
-		exit(24);
-    else if ((gi = malloc((points + 2) * sizeof(double))) == NULL)
-		exit(25);
 	else if ((bij = malloc((2 * r) * sizeof(double))) == NULL)
-		exit(26);
+		exit(24);
 	else if ((wi = malloc(r * sizeof(double))) == NULL)
-		exit(27);
+		exit(25);
 	else if ((Wp = malloc(points * sizeof(double))) == NULL)
-		exit(28);
+		exit(26);
 	else if ((DiffW = malloc(points * sizeof(double))) == NULL)
-		exit(29);
+		exit(27);
 	else if ((mij = malloc(((r * (r + 1)) / 2) * sizeof(double))) == NULL)
-		exit(30);
+		exit(28);
 
 	/*===============================GGM MODEL=================================*/
 	for (i = 0; i < header1; i++)
@@ -164,7 +160,7 @@ int main(void)
 		if(fgets(line, BUFSIZ, fp1) == NULL)
 				printf("\nerror in function fgets\n");
 	}
-	
+
 	Cnm[0] = 1.0l;
 	Snm[0] = 0.0l;
 	Cnm[1] = 0.0l;
@@ -193,7 +189,7 @@ int main(void)
 	{
 		sscanf(line, "%lf%lf%lf", &lambda, &theta, &rho);
 		colatitude[i] = theta;
-        longitude[i] = lambda;
+		longitude[i] = lambda;
 		radius[i] = rho;
 		i++;
 	}
@@ -209,6 +205,7 @@ int main(void)
 		q = t * t;
 		root[q] = 1.0l * t;
 	}
+
 	sqr2 = root[2];
 	sqr3 = root[3];
 	coeff = 0.0l;
@@ -218,7 +215,7 @@ int main(void)
 		rooti[t] = coeff * z;
 		coeff = z;
 	}
-	
+
 	/* Computation of the normalization coefficients */
 	norm1[0] = 1.0l;
 	for (n = 1; n <= N; n++)
@@ -227,7 +224,7 @@ int main(void)
 		norm1[n] = coeff;
 		norm2[n] = sqr2 * coeff / root[n] / root[n + 1];
 	}
-	
+
 	/* Computation of the odd pnn coefficients */
 	pnn = 1.0l;
 	PNN[1] = pnn;
@@ -240,7 +237,7 @@ int main(void)
 		pnn *= 1.0l - A * coeff;
 		PNN[n] = pnn;
 	}
-	
+
 	/* Computation of the even pnn coefficients */
 	pnn = 2.0l;
 	for (n = 2; n <= N; n += 2)
@@ -252,7 +249,7 @@ int main(void)
 		pnn *= 1.0l - A * coeff;
 		PNN[n] = pnn;
 	}
-	
+
 	/* Computation of the pn0 coefficients */
 	pn0 = 1.0l;
 	PN0[0] = pn0;
@@ -263,14 +260,14 @@ int main(void)
 		pn0 *= A * A;
 		PN0[n] = pn0;
 	}
-	
+
 	/* Computation of the odd Tni ratios */
 	i = 0;
 	for (n = 3; n <= N; n += 2)
 	{
 		p = n - 1;
 		q = n + 2;
-		while (p > 0) 
+		while (p > 0)
 		{
 			/* Calculates the Tni ratio */
 			B = 1.0l - 1.0l / p;
@@ -281,14 +278,14 @@ int main(void)
 			i++;
 		}
 	}
-	
+
 	/* Computation of the even Tni ratios */
 	i = 0;
 	for (n = 2; n <= N; n += 2)
 	{
 		p = n - 2;
 		q = n + 3;
-		while (p > 0) 
+		while (p > 0)
 		{
 			/* Calculates the Tni ratio */
 			B = 1.0l - 1.0l / p;
@@ -299,7 +296,7 @@ int main(void)
 			i++;
 		}
 	}
-	
+
 	/* Computation of the anm, bnm and cnm coefficients */
 	for (n = 4; n <= N; n++)
 	{
@@ -317,33 +314,31 @@ int main(void)
 			anm[q] = coefn * rooti[nm1 - m] / z;
 			bnm[q] = sign * coefn * rooti[nm3 + m] / z;
 			cnm[q] = sign * rooti[np1 - m] / z;
-			//printf("\n%10.4lf%10.4lf%10.4lf", anm[q], bnm[q], cnm[q]);
 		}
 	}
 	/*=========================================================================*/
 
-    /*===================Least-squares adjustment procedure====================*/
+	/*===================Least-squares adjustment procedure====================*/
 
 	/* Setting initial values for the radial distances and weights for each point */
 	for (i = 0; i < points; i++)
-    {
+	{
 		di[i] = 0.0l;
-        wpi[i] = 1.0l; /* Weight */
-    }
+		wpi[i] = 1.0l; /* Weight */
+	}
 
 	sigma0 = 1.0l;
 	sigma01 = 2.0l;
 	iterations = 0;
 	do {
-	
 		sigma0 = sigma01;
 		/* Computation of the gravity potential and its derivatives for each point */
-        printf("\n\nComputation of the gravity potential and its derivatives for each point: Start (%lds)", clock() / CLOCKS_PER_SEC);
+		printf("\n\nComputation of the gravity potential and its derivatives for each point: Start (%lds)", clock() / CLOCKS_PER_SEC);
 		for (i = 0; i < points; i++)
 		{
-            theta = colatitude[i];
-            lambda = longitude[i] * d2r;
-            ridi = radius[i] - di[i];
+			theta = colatitude[i];
+			lambda = longitude[i] * d2r;
+			ridi = radius[i] - di[i];
 
 			/* Computation of the multiple cosines by using the Chebyshev's method */
 			cosnm1x = cos(lambda);
@@ -378,25 +373,25 @@ int main(void)
 
 			Wa = DiffWa = 0.0l;
 			geomalf(N, theta, pnm); /* Calling the function geomalf(), to compute the ALFs */
-            frac = R / ridi;
-            coeff = 1.0l;
+			frac = R / ridi;
+			coeff = 1.0l;
 			j = 0;
 			for(n = 0; n <= N; n++)
-			{	
+			{
 				summation1 = 0.0l;
 				for(m = 0; m <= n; m++)
 				{
 					summation1 += pnm[j] * (Cnm[j] * cosn[m] + Snm[j] * sinn[m]);
 					j++;
 				}
-                var = coeff * summation1;
+				var = coeff * summation1;
 				Wa += var;
 				DiffWa += (n + 1) * var;
-                coeff *= frac;
+				coeff *= frac;
 			}
 
-            sintheta = sin(theta * d2r);
-            sin2theta = sintheta * sintheta;
+			sintheta = sin(theta * d2r);
+			sin2theta = sintheta * sintheta;
 
 			Wa *= GM / ridi;
 			Wa += 0.5l * ridi * ridi * OMEGA * OMEGA * sin2theta;
@@ -411,15 +406,14 @@ int main(void)
 			}
 			else
 			{
-                var = 2.0l * pi * G * DENSITY * di[i];
+				var = 2.0l * pi * G * DENSITY * di[i];
 				deltaW = var * di[i] * (1.0l + 2.0l * radius[i] / ridi) / 3.0l;
 				Wp[i] = Wa - deltaW;
 				DiffdeltaW = 2.0l * var * (1.0l + (radius[i] / ridi) * (1.0l + radius[i] / ridi)) / 3.0l;
 				DiffW[i] = DiffWa - DiffdeltaW;
 			}
-			
 		}
-        printf("\nComputation of the gravity potential and its derivatives for each point: End (%lds)", clock() / CLOCKS_PER_SEC);
+		printf("\nComputation of the gravity potential and its derivatives for each point: End (%lds)", clock() / CLOCKS_PER_SEC);
 
 		printf("\nComputation of the elements of the matrix B");
 
@@ -446,7 +440,7 @@ int main(void)
 
 		/* Inversion of the matrix M */
 		cholesky_tridiagonal(Di, si, mij, r);
-        
+
 		printf("\nComputation of the vector w");
 
 		/* Computation of the vector w */
@@ -469,7 +463,7 @@ int main(void)
 		/* Computation of the radial distances di for 1 < i < n */
 		for (i = 1; i < r; i++)
 		{
-            i_1 = i - 1;
+			i_1 = i - 1;
 			resi = resii = 0.0l;
 
 			for (j = 0; j < i_1; j++)
@@ -483,7 +477,7 @@ int main(void)
 			for (j = i; j < r; j++)
 				resii += mij[i * (r2m1 - i) / 2 + j] * wi[j];
 			resii *= bij[2 * i];
-            resi += resii;
+			resi += resii;
 			di[i] = resi / wpi[i];
 		}
 
@@ -493,27 +487,27 @@ int main(void)
 				resii += mij[(j + 1) * (2 * r - j) / 2 - 1] * wi[j];
 		di[r] = bij[2 * r - 1] * resii / wpi[r];
 
-        for (i = 0; i < points; i++)
-        {
-            resi = di[i];
-            coeff += resi * resi * wpi[i];
-        }
+		for (i = 0; i < points; i++)
+		{
+			resi = di[i];
+			coeff += resi * resi * wpi[i];
+		}
 
 		sigma01 = sqrt(coeff / r);
-        printf("\niteration %d completed", iterations);
+		printf("\niteration %d completed", iterations);
 		printf("\nsigma0 = +/- %-14.8lf", sigma01);
 
-        /* Correcting the values of the radius for each point */
-        for (i = 0; i < points; i++)
+		/* Correcting the values of the radius for each point */
+		for (i = 0; i < points; i++)
 			radius[i] -= di[i];
 
-        iterations++;
+		iterations++;
 		if (iterations > 5)
 			break;
 
 	}while(MYABS(sigma0 - sigma01) > CONVTOL);
 
-    /* Printing the results */
+	/* Printing the results */
 	printf("\nn = %d measurements\nr = %d degrees of freedom\niterations = %d\nsigma0 = +/- %-10.4lf\n", points, r, iterations, sigma01);
 	printf("\n%-15s%-15s%-20s%-20s%-20s", "Longitude", "Co-latitude", "Radius", "di", "W0\n\n");
 	for (i = 0; i < points; i++)
@@ -521,7 +515,7 @@ int main(void)
 		ridi = radius[i] - di[i];
 		printf("%-15.4lf%-15.4lf%-20.3lf%-20.3lf%-20.3lf\n", longitude[i], colatitude[i], ridi, di[i], Wp[i]);
 	}
-	
+
 	return 0;
 }
 
@@ -538,14 +532,14 @@ void geomalf(int N, double theta, double *pnm)
 	register int p, t, i;
 	int n, m, q, np1, nm1, nm2, nm3, nnp12;
 	double pihalf, raddeg, cosnm1x, cosnm2x, cosnx, sinnm1x, sinnm2x, sinnx;
-	double coeff, coss, sins, Pi0, Pi1, Tni;						
+	double coeff, coss, sins, Pi0, Pi1, Tni;
 	double *cosn, *sinn, *Pn0, *Pn1, *Pn_even, *Pn_odd, *Pn;
 	double Pn_2_m, Pn_2_m_2, Pn_m_2, Pnm;
-	
+
 	pihalf = 2.0l * atan(1.0l);
 	raddeg = pihalf / 90.0l;
 	theta *= raddeg;
-	
+
 	if ((cosn = malloc((N + 1) * sizeof(double))) == NULL)
 		exit(100);
 	else if ((sinn = malloc((N + 1) * sizeof(double))) == NULL)
@@ -560,10 +554,10 @@ void geomalf(int N, double theta, double *pnm)
 		exit(105);
 	else if ((Pn = malloc((N + 3) * sizeof(double))) == NULL)
 		exit(106);
-	
+
 	/* Calculates the multiple angle cosines with Chebyshev's algorithm
 	https://en.wikipedia.org/wiki/List_of_trigonometric_identities */
-		
+
 	cosnm1x = cos(theta);
 	coeff = 2.0l * cosnm1x;
 	cosnm2x = 1.0l;
@@ -576,7 +570,7 @@ void geomalf(int N, double theta, double *pnm)
 		cosnm2x = cosnm1x;
 		cosnm1x = cosnx;
 	}
-	
+
 	/* Calculates the multiple angle sines with Chebyshev's algorithm
 	https://en.wikipedia.org/wiki/List_of_trigonometric_identities */
 
@@ -592,13 +586,13 @@ void geomalf(int N, double theta, double *pnm)
 		sinnm2x = sinnm1x;
 		sinnm1x = sinnx;
 	}
-	
+
 	/* Calculates the Legendre Polynomials (m = 0) and Functions (m = 1) */
 	Pn0[0] = 1.0l;
 	Pn0[1] = root[3] * cosn[1];
 	Pn1[0] = 0.0l;
 	Pn1[1] = root[3] * sinn[1];
-	
+
 	/* Calculates the odd Legendre polynomials (m = 0) and Functions (m = 1) */
 	i = 0;
 	coss = cosn[1];
@@ -609,7 +603,7 @@ void geomalf(int N, double theta, double *pnm)
 		Pi0 = coss;
 		Pi1 = sins;
 		t = 3;
-		while (p > 0) 
+		while (p > 0)
 		{
 			Tni = Tni_odd[i];
 			Pi0 *= Tni;
@@ -623,7 +617,7 @@ void geomalf(int N, double theta, double *pnm)
 		Pn0[n] = Pi0 * PNN[n] * norm1[n];
 		Pn1[n] = Pi1 * PNN[n] * norm2[n];
 	}
-	
+
 	/* Calculates the even Legendre polynomials (m = 0) and Functions (m = 1) */
 	i = 0;
 	coss = cosn[2];
@@ -634,7 +628,7 @@ void geomalf(int N, double theta, double *pnm)
 		Pi0 = coss;
 		Pi1 = 2.0l * sins;
 		t = 4;
-		while (p > 0) 
+		while (p > 0)
 		{
 			Tni = Tni_even[i];
 			Pi0 *= Tni;
@@ -649,16 +643,16 @@ void geomalf(int N, double theta, double *pnm)
 		Pn0[n] = (Pi0 * PNN[n] + PN0[n]) * norm1[n];
 		Pn1[n] = Pi1 * PNN[n] * norm2[n];
 	}
-	
+
 	n = 0;
 	pnm[0] = Pn0[0];
-	
+
 	n = 1;
 	Pn_odd[0] = Pn0[n];
 	Pn_odd[1] = Pn1[n];
 	pnm[1] = Pn_odd[0];
 	pnm[2] = Pn_odd[1];
-	
+
 	n = 2;
 	Pn_even[0] = Pn0[n];
 	Pn_even[1] = Pn1[n];
@@ -666,7 +660,7 @@ void geomalf(int N, double theta, double *pnm)
 	pnm[3] = Pn_even[0];
 	pnm[4] = Pn_even[1];
 	pnm[5] = Pn_even[2];
-	
+
 	n = 3;
 	Pn_odd[0] = Pn0[n];
 	Pn_odd[1] = Pn1[n];
@@ -685,12 +679,12 @@ void geomalf(int N, double theta, double *pnm)
 		nm2 = n - 2;
 		nm3 = n - 3;
 		nnp12 = (n * np1) / 2;
-		
+
 		if(n % 2) /*========== n is odd ==========*/
 		{
 			/*<========= m is odd =========>*/
 			Pn[1] = Pn1[n];
-			
+
 			for (m = 3; m <= nm2; m += 2)
 			{
 				q = m + nnp12;
@@ -700,15 +694,15 @@ void geomalf(int N, double theta, double *pnm)
 				Pnm = anm[q] * Pn_2_m + bnm[q] * Pn_2_m_2 - cnm[q] * Pn_m_2;
 				Pn[m] = Pnm;
 			}
-			
+
 			q = m + nnp12;
 			Pn_2_m_2 = Pn_odd[nm2];
-			Pn_m_2 = Pn[nm2]; 
+			Pn_m_2 = Pn[nm2];
 			Pnm = bnm[q] * Pn_2_m_2 - cnm[q] * Pn_m_2; /* calculates the Pnn Legendre function */
 			Pn[n] = Pnm;
-			
+
 			/*<========= m is even =========>*/
-			
+
 			Pn[0] = Pn0[n]; /* polynomial */
 			for (m = 2; m <= nm2; m += 2)
 			{
@@ -719,13 +713,13 @@ void geomalf(int N, double theta, double *pnm)
 				Pnm = anm[q] * Pn_2_m + bnm[q] * Pn_2_m_2 - cnm[q] * Pn_m_2;
 				Pn[m] = Pnm;
 			}
-			
+
 			q = m + nnp12;
 			Pn_2_m_2 = Pn_odd[nm3];
 			Pn_m_2 = Pn[nm3];
 			Pnm = bnm[q] * Pn_2_m_2 - cnm[q] * Pn_m_2; /* calculates the Pn,n-1 Legendre function */
 			Pn[nm1] = Pnm;
-			
+
 			for (m = 0; m <= n; m++)
 			{
 				Pnm = Pn[m];
@@ -736,7 +730,7 @@ void geomalf(int N, double theta, double *pnm)
 		else /*========== n is even ==========*/
 		{
 			/*<========= m is even =========>*/
-			
+
 			Pn[0] = Pn0[n];
 			for (m = 2; m <= nm2; m += 2)
 			{
@@ -747,16 +741,16 @@ void geomalf(int N, double theta, double *pnm)
 				Pnm = anm[q] * Pn_2_m + bnm[q] * Pn_2_m_2 - cnm[q] * Pn_m_2;
 				Pn[m] = Pnm;
 			}
-			
+
 			q = m + nnp12;
 			Pn_2_m_2 = Pn_even[nm2];
-			Pn_m_2 = Pn[nm2]; 
+			Pn_m_2 = Pn[nm2];
 			Pnm = bnm[q] * Pn_2_m_2 - cnm[q] * Pn_m_2; /* calculates the Pnn Legendre function */
 			Pn[n] = Pnm;
-			
+
 			/*<========= m is odd =========>*/
-			
-			Pn[1] = Pn1[n]; 
+
+			Pn[1] = Pn1[n];
 			for (m = 3; m <= nm2; m += 2)
 			{
 				q = m + nnp12;
@@ -766,13 +760,13 @@ void geomalf(int N, double theta, double *pnm)
 				Pnm = anm[q] * Pn_2_m + bnm[q] * Pn_2_m_2 - cnm[q] * Pn_m_2;
 				Pn[m] = Pnm;
 			}
-			
+
 			q = m + nnp12;
 			Pn_2_m_2 = Pn_even[nm3];
 			Pn_m_2 = Pn[nm3];
 			Pnm = bnm[q] * Pn_2_m_2 - cnm[q] * Pn_m_2; /* calculates the Pn,n-1 Legendre function */
 			Pn[nm1] = Pnm;
-			
+
 			for (m = 0; m <= n; m++)
 			{
 				Pnm = Pn[m];
@@ -804,7 +798,7 @@ void cholesky_tridiagonal(double *D, double *s, double *b, int n)
 	register int i, j, k;
 	int uts, n2p1, n2m1, nm1, index, indexi, indexj, ind;
 	double *c, *d, sumb, coeff;
-    double ci_ip1, cii;
+	double ci_ip1, cii;
 
 	uts = (n * (n + 1)) / 2; /* The number of elements of the upper triangular part */
 	n2p1 = 2 * n + 1;
@@ -815,45 +809,45 @@ void cholesky_tridiagonal(double *D, double *s, double *b, int n)
 		exit(200);
 	else if ((d = malloc(uts * sizeof(double))) == NULL)
 		exit(201);
-	
-    /* calculation of the matrix c (bidiagonal matrix) */
+
+	/* calculation of the matrix c (bidiagonal matrix) */
 	c[0] = cii = sqrt(D[0]);
 	d[0] = 1.0l / cii;
-    for (i = 1; i < n; i++)
-    {
+	for (i = 1; i < n; i++)
+	{
 		ci_ip1 = s[i - 1] / cii;
 		cii = sqrt(D[i] - ci_ip1 * ci_ip1);
 		d[i * (n2p1 - i) / 2] = 1.0l / cii;
 		c[2 * i - 1] = ci_ip1;
 		c[2 * i] = cii;
-    }
-	
-    /* calculation of the matrix d (upper triangular matrix) */
-    for (i = n - 1; i >= 0; i--)
-	{
-        ind = nm1 - i;
-        index = i * (n2p1 - i) / 2;
-        indexi = i * (n2m1 - i) / 2;
-        coeff = -d[index] * c[2 * i + 1];
-     	for (j = i + 1; j < n; j++)
-     	{
-			indexj = indexi + j;
-     		d[indexj] = coeff * d[indexj + ind];
-     	}
 	}
 
-    /* calculation of the inverse matrix (symmetric matrix) */
-    for (i = 0; i < n; i++)
+	/* calculation of the matrix d (upper triangular matrix) */
+	for (i = n - 1; i >= 0; i--)
+	{
+		ind = nm1 - i;
+		index = i * (n2p1 - i) / 2;
+		indexi = i * (n2m1 - i) / 2;
+		coeff = -d[index] * c[2 * i + 1];
+		for (j = i + 1; j < n; j++)
+		{
+			indexj = indexi + j;
+			d[indexj] = coeff * d[indexj + ind];
+		}
+	}
+
+	/* calculation of the inverse matrix (symmetric matrix) */
+	for (i = 0; i < n; i++)
 	{
 		index = i * (n2m1 - i) / 2;
-     	for (j = i; j < n; j++)
-     	{
+		for (j = i; j < n; j++)
+		{
 			indexj = j * (n2m1 - j) / 2;
-     		sumb = 0.0l;
-     		for (k = j; k < n; k++)
+			sumb = 0.0l;
+			for (k = j; k < n; k++)
 				sumb += d[index + k] * d[indexj + k];
-     		b[index + j] = sumb; 
-     	}
+			b[index + j] = sumb;
+		}
 	}
 
 	free(c);
